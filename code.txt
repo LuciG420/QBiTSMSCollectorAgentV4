@@ -1,0 +1,19 @@
+├── flutter_app/ (Flutter Application)
+│   ├── lib/
+│   │   ├── main.dart (Entry point)
+│   │   ├── auth/ (Auth0 related)
+│   │   │   ├── auth_service.dart
+│   │   │   └── auth_state.dart
+│   │   ├── models/
+│   │   │   └── item.dart (Example data model)
+│   │   ├── screens/
+│   │   │   ├── home_screen.dart
+│   │   │   ├── login_screen.dart
+│   │   │   └── profile_screen.dart
+│   │   ├── services/
+│   │   │   └── api_service.dart
+│   ├── pubspec.yaml
+├── cloudflare_worker/ (Cloudflare Worker)
+│   ├── src/
+│   │   ├── index.ts (Main worker script)
+│   ├── wrangler.toml (Worker configuration)
