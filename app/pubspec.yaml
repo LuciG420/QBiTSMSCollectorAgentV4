@@ -34,7 +34,8 @@ dependencies:
   flutter_secure_storage: ^9.0.0 # To securely store tokens
   http: ^1.1.0 # For making API requests
   json_annotation: ^4.8.1
-  jwt_decoder: ^3.1.0
+  jwt_decoder: ^2.0.1
+  provider: ^6.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

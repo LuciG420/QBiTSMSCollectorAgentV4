@@ -1,7 +1,7 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_app/auth/auth_state.dart';
-import 'package:flutter_app/services/api_service.dart';
+import 'package:app/auth/auth_state.dart';
+import 'package:app/services/api_service.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
     try {
-      final accessToken = await context.read<AuthState>()._authService.getAccessToken();
+      final accessToken = await context.read<AuthState>().authService.getAccessToken();
       if (accessToken != null) {
         _data = await _apiService.fetchData(accessToken);
       } else {

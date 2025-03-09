@@ -1,12 +1,15 @@
 // lib/auth/auth_state.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_app/auth/auth_service.dart';
+import 'package:app/auth/auth_service.dart';
 
 class AuthState extends ChangeNotifier {
   bool _isLoggedIn = false;
   Map<String, dynamic>? _userProfile;
   final AuthService _authService = AuthService();
 
+  // Getter for _authService
+  AuthService get authService => _authService;
+  
   bool get isLoggedIn => _isLoggedIn;
   Map<String, dynamic>? get userProfile => _userProfile;
 

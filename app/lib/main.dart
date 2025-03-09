@@ -1,8 +1,8 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_app/auth/auth_state.dart';
-import 'package:flutter_app/screens/home_screen.dart';
-import 'package:flutter_app/screens/login_screen.dart';
+import 'package:app/auth/auth_state.dart';
+import 'package:app/screens/home_screen.dart';
+import 'package:app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
