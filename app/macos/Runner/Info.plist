@@ -28,5 +28,10 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>your_app_name</string>  <!-- MUST match your Auth0 Callback URL scheme -->
+        </array>
+
 </dict>
 </plist>
