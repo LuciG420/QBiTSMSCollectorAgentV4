@@ -1,4 +1,6 @@
 // lib/auth/auth_service.dart
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,11 +10,16 @@ class AuthService {
   final FlutterAppAuth _appAuth = FlutterAppAuth();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  static const String AUTH0_DOMAIN = 'dev-ukaaosck1wcq8dyt.us.auth0.com'; // Replace
-  static const String AUTH0_CLIENT_ID = 'XvsypJg9OMoum6BYAVUx3IDtpGz4ChPG'; // Replace
-  static const String AUTH0_REDIRECT_URI = 'ink.qbit.app.mobile://login-callback'; // Replace
-  static const String AUTH0_ISSUER = 'https://$AUTH0_DOMAIN/'; // Replace YOUR_AUTH0_DOMAIN
-  static const String AUTH0_AUDIENCE = 'YOUR_API_IDENTIFIER'; // Replace with the Auth0 API Identifier
+  static const String AUTH0_DOMAIN =
+      'dev-ukaaosck1wcq8dyt.us.auth0.com'; // Replace
+  static const String AUTH0_CLIENT_ID =
+      'XvsypJg9OMoum6BYAVUx3IDtpGz4ChPG'; // Replace
+  static const String AUTH0_REDIRECT_URI =
+      'ink.qbit.app.mobile://login-callback'; // Replace
+  static const String AUTH0_ISSUER =
+      'https://$AUTH0_DOMAIN/'; // Replace YOUR_AUTH0_DOMAIN
+  static const String AUTH0_AUDIENCE =
+      'YOUR_API_IDENTIFIER'; // Replace with the Auth0 API Identifier
   static const String REFRESH_TOKEN_KEY = 'refresh_token';
 
   Future<bool> isLoggedIn() async {
@@ -53,28 +60,51 @@ class AuthService {
     }
   }
 
-
   Future<TokenData> login() async {
     try {
-      final AuthorizationTokenResponse? result =
-          await _appAuth.authorizeAndExchangeCode(
-        AuthorizationTokenRequest(
-          AUTH0_CLIENT_ID,
-          AUTH0_REDIRECT_URI,
-          issuer: AUTH0_ISSUER,
-          scopes: ['openid', 'profile', 'offline_access', 'read:messages'], // Add scopes as needed.  'offline_access' is required for refresh tokens.
-          promptValues: ['login'], // Ensure a fresh login
-          additionalParameters: {'audience': AUTH0_AUDIENCE},
-        ),
+      // 1.  Authorize
+      final AuthorizationRequest request = AuthorizationRequest(
+        AUTH0_CLIENT_ID,
+        AUTH0_REDIRECT_URI,
+        issuer: AUTH0_ISSUER,
+        scopes: [
+          'openid',
+          'profile',
+          'offline_access',
+          'read:messages',
+        ], // Add scopes as needed.  'offline_access' is required for refresh tokens.
+        promptValues: ['login'], // Ensure a fresh login
+        additionalParameters: {'audience': AUTH0_AUDIENCE},
       );
 
-      if (result != null) {
-        await _secureStorage.write(
-            key: REFRESH_TOKEN_KEY, value: result.refreshToken);
-        return TokenData(result.accessToken!, result.idToken!);
+      final AuthorizationResponse? authorizationResponse = await _appAuth
+          .authorize(request);
 
+      if (authorizationResponse != null) {
+        // 2. Exchange code for tokens
+        final TokenResponse? tokenResponse = await _appAuth.token(
+          TokenRequest(
+            AUTH0_CLIENT_ID,
+            AUTH0_REDIRECT_URI,
+            authorizationCode: authorizationResponse.authorizationCode,
+            issuer: AUTH0_ISSUER,
+            grantType: 'authorization_code',
+            additionalParameters: {'audience': AUTH0_AUDIENCE},
+          ),
+        );
+
+        if (tokenResponse != null) {
+          await _secureStorage.write(
+            key: REFRESH_TOKEN_KEY,
+            value: tokenResponse.refreshToken,
+          );
+
+          return TokenData(tokenResponse.accessToken!, tokenResponse.idToken!);
+        } else {
+          throw Exception('Login failed: Token exchange failed.');
+        }
       } else {
-        throw Exception('Login failed: No result returned.');
+        throw Exception('Login failed: No authorization response.');
       }
     } catch (e) {
       if (kDebugMode) {
@@ -86,19 +116,23 @@ class AuthService {
 
   Future<TokenData> refreshTokenGrant(String refreshToken) async {
     try {
-      final TokenResponse? result = await _appAuth.token(TokenRequest(
-        AUTH0_CLIENT_ID,
-        AUTH0_REDIRECT_URI,
-        issuer: AUTH0_ISSUER,
-        refreshToken: refreshToken,
-        grantType: 'refresh_token',
-        additionalParameters: {'audience': AUTH0_AUDIENCE},
-      ));
+      final TokenResponse? result = await _appAuth.token(
+        TokenRequest(
+          AUTH0_CLIENT_ID,
+          AUTH0_REDIRECT_URI,
+          issuer: AUTH0_ISSUER,
+          refreshToken: refreshToken,
+          grantType: 'refresh_token',
+          additionalParameters: {'audience': AUTH0_AUDIENCE},
+        ),
+      );
 
       if (result != null) {
         // Update the refresh token, as Auth0 may rotate them
         await _secureStorage.write(
-            key: REFRESH_TOKEN_KEY, value: result.refreshToken);
+          key: REFRESH_TOKEN_KEY,
+          value: result.refreshToken,
+        );
         return TokenData(result.accessToken!, result.idToken!);
       } else {
         throw Exception('Refresh token grant failed: No result returned.');
@@ -114,11 +148,16 @@ class AuthService {
 
   Future<void> logout() async {
     try {
-      await _appAuth.endSession(EndSessionRequest(
-        idTokenHint: JwtDecoder.decode(await _secureStorage.read(key: 'id_token') ?? '')['sub'], // User's ID from ID token
-        postLogoutRedirectUrl: AUTH0_REDIRECT_URI,
-        issuer: AUTH0_ISSUER,
-      ));
+      await _appAuth.endSession(
+        EndSessionRequest(
+          idTokenHint:
+              JwtDecoder.decode(
+                await _secureStorage.read(key: 'id_token') ?? '',
+              )['sub'], // User's ID from ID token
+          postLogoutRedirectUrl: AUTH0_REDIRECT_URI,
+          issuer: AUTH0_ISSUER,
+        ),
+      );
       await _secureStorage.deleteAll();
     } catch (e) {
       if (kDebugMode) {
