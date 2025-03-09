@@ -1,5 +1,6 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:app/auth/auth_state.dart';
 import 'package:app/services/api_service.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _data = await _apiService.fetchData(accessToken);
       } else {
         // Handle case where access token is not available
-        print('No access token available');
+        if (kDebugMode) {
+          print('No access token available');
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

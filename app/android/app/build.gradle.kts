@@ -21,16 +21,17 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.app"
+        applicationId = "ink.qbit.app.mobile"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-	manifestPlaceholders = [
-      		'appAuthRedirectScheme': 'your_app_name' //  MUST match what you put in Auth0 Callback URL.
-    	]
+        manifestPlaceholders += [
+            auth0Domain: "dev-ukaaosck1wcq8dyt.us.auth0.com", 
+            auth0Scheme: "https"
+        ]        
     }
 
     buildTypes {

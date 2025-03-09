@@ -1,5 +1,6 @@
 // lib/auth/auth_state.dart
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:app/auth/auth_service.dart';
 
 class AuthState extends ChangeNotifier {
@@ -29,7 +30,9 @@ class AuthState extends ChangeNotifier {
       await loadUserProfile();
       notifyListeners();
     } catch (e) {
-      print('Login failed in AuthState: $e');
+      if (kDebugMode) {
+        print('Login failed in AuthState: $e');
+      }
       // Handle login error (e.g., show an error message)
       _isLoggedIn = false;
       notifyListeners();

@@ -1,5 +1,6 @@
 // lib/auth/auth_service.dart
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -7,10 +8,10 @@ class AuthService {
   final FlutterAppAuth _appAuth = FlutterAppAuth();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  static const String AUTH0_DOMAIN = 'YOUR_AUTH0_DOMAIN'; // Replace
-  static const String AUTH0_CLIENT_ID = 'YOUR_AUTH0_CLIENT_ID'; // Replace
-  static const String AUTH0_REDIRECT_URI = 'your_app_name://login-callback'; // Replace
-  static const String AUTH0_ISSUER = 'https://YOUR_AUTH0_DOMAIN/'; // Replace YOUR_AUTH0_DOMAIN
+  static const String AUTH0_DOMAIN = 'dev-ukaaosck1wcq8dyt.us.auth0.com'; // Replace
+  static const String AUTH0_CLIENT_ID = 'XvsypJg9OMoum6BYAVUx3IDtpGz4ChPG'; // Replace
+  static const String AUTH0_REDIRECT_URI = 'ink.qbit.app.mobile://login-callback'; // Replace
+  static const String AUTH0_ISSUER = 'https://$AUTH0_DOMAIN/'; // Replace YOUR_AUTH0_DOMAIN
   static const String AUTH0_AUDIENCE = 'YOUR_API_IDENTIFIER'; // Replace with the Auth0 API Identifier
   static const String REFRESH_TOKEN_KEY = 'refresh_token';
 
@@ -25,7 +26,9 @@ class AuthService {
       return true; // Token refreshed successfully, so user is still logged in
     } catch (e) {
       // Refresh failed, token is likely invalid
-      print('Refresh token failed: $e');
+      if (kDebugMode) {
+        print('Refresh token failed: $e');
+      }
       await logout(); // Clear storage on refresh failure
       return false;
     }
@@ -42,7 +45,9 @@ class AuthService {
       final tokenData = await refreshTokenGrant(refreshToken);
       return tokenData.accessToken;
     } catch (e) {
-      print('Failed to refresh token: $e');
+      if (kDebugMode) {
+        print('Failed to refresh token: $e');
+      }
       // Handle refresh failure - maybe logout the user
       return null;
     }
@@ -72,7 +77,9 @@ class AuthService {
         throw Exception('Login failed: No result returned.');
       }
     } catch (e) {
-      print('Login error: $e');
+      if (kDebugMode) {
+        print('Login error: $e');
+      }
       rethrow;
     }
   }
@@ -97,7 +104,9 @@ class AuthService {
         throw Exception('Refresh token grant failed: No result returned.');
       }
     } catch (e) {
-      print('Refresh token grant error: $e');
+      if (kDebugMode) {
+        print('Refresh token grant error: $e');
+      }
       await logout(); // Clear credentials on refresh failure
       rethrow;
     }
@@ -112,7 +121,9 @@ class AuthService {
       ));
       await _secureStorage.deleteAll();
     } catch (e) {
-      print('Logout error: $e');
+      if (kDebugMode) {
+        print('Logout error: $e');
+      }
     }
   }
 

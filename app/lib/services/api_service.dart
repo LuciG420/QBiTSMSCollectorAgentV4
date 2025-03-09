@@ -1,5 +1,6 @@
 // lib/services/api_service.dart
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
 class ApiService {
@@ -17,11 +18,15 @@ class ApiService {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        print('Failed to fetch data: ${response.statusCode} - ${response.body}');
+        if (kDebugMode) {
+          print('Failed to fetch data: ${response.statusCode} - ${response.body}');
+        }
         throw Exception('Failed to fetch data');
       }
     } catch (e) {
-      print('Error during API call: $e');
+      if (kDebugMode) {
+        print('Error during API call: $e');
+      }
       rethrow;
     }
   }
