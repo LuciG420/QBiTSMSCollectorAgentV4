@@ -1,4 +1,4 @@
-package com.example.app
+package ink.qbit.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
     try {
-      final accessToken = await context.read<AuthState>().authService.getAccessToken();
+      final accessToken =
+          await context.read<AuthState>().authService.getAccessToken();
       if (accessToken != null) {
         _data = await _apiService.fetchData(accessToken);
       } else {
@@ -38,9 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch data: $e')),
-      );
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to fetch data: $e')));
     } finally {
       setState(() {
         _isLoading = false;
@@ -64,17 +66,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _data.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_data[index]['name'] ?? 'No Name'), // Adjust based on your API response
-                  subtitle: Text(_data[index]['description'] ?? 'No Description'),
-                );
-              },
-            ),
+      body:
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                itemCount: _data.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      _data[index]['name'] ?? 'No Name',
+                    ), // Adjust based on your API response
+                    subtitle: Text(
+                      _data[index]['description'] ?? 'No Description',
+                    ),
+                  );
+                },
+              ),
     );
   }
 }

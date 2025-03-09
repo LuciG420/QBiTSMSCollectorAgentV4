@@ -21,16 +21,17 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "ink.qbit.app.mobile"
+        applicationId = "ink.qbit.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        manifestPlaceholders += [
+        manifestPlaceholders = [
             auth0Domain: "dev-ukaaosck1wcq8dyt.us.auth0.com", 
-            auth0Scheme: "https"
+            auth0Scheme: "https",
+            appAuthRedirectScheme: 'ink.qbit.app' // <---  Crucial
         ]        
     }
 
