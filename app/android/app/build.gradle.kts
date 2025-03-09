@@ -28,10 +28,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        manifestPlaceholders = [
+        manifestPlaceholders += [
             auth0Domain: "dev-ukaaosck1wcq8dyt.us.auth0.com", 
             auth0Scheme: "https",
-            appAuthRedirectScheme: 'ink.qbit.app' // <---  Crucial
+            'appAuthRedirectScheme': "ink.qbit.app" // <---  Crucial
         ]        
     }
 

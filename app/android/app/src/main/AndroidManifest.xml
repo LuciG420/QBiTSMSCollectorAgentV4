@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ink.qbit.app.mobile">
+    package="ink.qbit.app">
     <application
-        android:label="flutter_app"
+        android:label="app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
