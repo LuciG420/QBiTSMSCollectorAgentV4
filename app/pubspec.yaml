@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_appauth: ^9.0.0  # or the latest version
+  flutter_appauth: ^6.0.0  # or the latest version
   flutter_secure_storage: ^10.0.0-beta.4 # To securely store tokens
   http: ^1.1.0 # For making API requests
   json_annotation: ^4.8.1
