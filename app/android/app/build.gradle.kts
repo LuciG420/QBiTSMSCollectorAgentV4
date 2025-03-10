@@ -63,7 +63,7 @@ android {
         androidTestImplementation("androidx.test.ext:junit:1.1.3")
         androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-        implementation("io.flutter:flutter_embedding:1.0.0")
+        //implementation("io.flutter:flutter_embedding:1.0.0")
     }    
 }
 
