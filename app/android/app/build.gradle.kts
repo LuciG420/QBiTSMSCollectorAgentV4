@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.app"
+    namespace = "ink.qbit.app"
     compileSdk = flutter.compileSdkVersion
     //ndkVersion = flutter.ndkVersion
     ndkVersion = "27.0.12077973"
@@ -25,8 +25,11 @@ android {
         applicationId = "ink.qbit.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        //minSdk = flutter.minSdkVersion
+        //targetSdk = flutter.targetSdkVersion
+        minSdk = 23
+        targetSdk = 33
+
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         manifestPlaceholders.put("appAuthRedirectScheme", "ink.qbit.app") // Correct!
@@ -64,6 +67,7 @@ android {
         androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
         //implementation("io.flutter:flutter_embedding:1.0.0")
+	implementation("com.auth0.android:auth0:1.+")
     }    
 }
 

@@ -3,6 +3,7 @@
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -106,6 +107,11 @@ class AuthService {
       } else {
         throw Exception('Login failed: No authorization response.');
       }
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print('flutter authorize ex: $e');
+      }
+      rethrow;
     } catch (e) {
       if (kDebugMode) {
         print('Login error: $e');
